@@ -1,0 +1,1026 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue Produits - Fah_Accessoires</title>
+    <style>
+        /* Reset et base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #000000 0%, #2d3748 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* En-tête */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .nav a {
+            margin: 0 25px;
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: #000000;
+            background: rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav a.active {
+            color: #000000;
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        /* En-tête de page */
+        .page-header {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .page-title {
+            font-size: 2.8rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: #4a5568;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Filtres et recherche */
+        .filters-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto 25px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #000000;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #000000 0%, #4a5568 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #2d3748 0%, #000000 100%);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 0.9rem;
+        }
+
+        .filter-select {
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #000000;
+        }
+
+        /* Grille de produits */
+        .products-section {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+        }
+
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .products-count {
+            font-size: 1.1rem;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .sort-select {
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            font-size: 0.9rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #000000 0%, #4a5568 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            background: white;
+        }
+
+        .product-image-container {
+            position: relative;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-card:hover .product-overlay {
+            opacity: 1;
+        }
+
+        .quick-view-btn {
+            background: white;
+            color: #000000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-view-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            background: #000000;
+            color: white;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #000000;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .product-info {
+            padding: 0 10px;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .product-price {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 15px;
+        }
+
+        .product-description {
+            color: #4a5568;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .add-to-cart {
+            background: linear-gradient(135deg, #000000 0%, #4a5568 100%);
+            color: white;
+        }
+
+        .view-details {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .add-to-cart:hover {
+            background: linear-gradient(135deg, #2d3748 0%, #000000 100%);
+        }
+
+        .view-details:hover {
+            background: #000000;
+            color: white;
+        }
+
+        /* MODAL STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            animation: modalSlideIn 0.3s ease-out;
+            position: relative;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4a5568;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(255,255,255,0.9);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #000000;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .modal-image {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .modal-info h2 {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .modal-price {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+
+        .modal-description {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .modal-features {
+            margin-bottom: 30px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #4a5568;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #000000 0%, #4a5568 100%);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .modal-btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .modal-btn-primary:hover {
+            background: linear-gradient(135deg, #2d3748 0%, #000000 100%);
+        }
+
+        .modal-btn-secondary:hover {
+            background: #000000;
+            color: white;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .pagination-btn {
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            color: #4a5568;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .pagination-btn:hover {
+            border-color: #000000;
+            color: #000000;
+        }
+
+        .pagination-btn.active {
+            background: #000000;
+            color: white;
+            border-color: #000000;
+        }
+
+        .pagination-info {
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        /* Message vide */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            background: #f8fafc;
+            border-radius: 20px;
+            margin: 40px 0;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .empty-title {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .empty-description {
+            font-size: 1.1rem;
+            color: #4a5568;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        /* Bouton retour */
+        .back-btn {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .back-btn a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+
+        .back-btn a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav a {
+                margin: 0 10px;
+                font-size: 1rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .products-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .search-bar {
+                flex-direction: column;
+            }
+            
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
+            
+            .modal-body {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- En-tête -->
+        <header class="header">
+            <h1>Fah_Accessoires</h1>
+            <p>Découvrez notre collection complète d'accessoires</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <a href="{% url 'accueil' %}">🏠 Accueil</a>
+            <a href="{% url 'liste_produits' %}" class="active">🛍️ Produits</a>
+            <a href="{% url 'contact' %}">📞 Contact</a>
+        </nav>
+
+        <!-- En-tête de page -->
+        <section class="page-header">
+            <h1 class="page-title">Notre Collection Complète ✨</h1>
+            <p class="page-subtitle">Découvrez tous nos accessoires soigneusement sélectionnés pour sublimer votre style</p>
+        </section>
+
+        <!-- Filtres et recherche -->
+        <section class="filters-section">
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="🔍 Rechercher un produit...">
+                <button class="search-btn">Rechercher</button>
+            </div>
+            
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Catégorie</label>
+                    <select class="filter-select">
+                        <option>Toutes les catégories</option>
+                        <option>Bijoux</option>
+                        <option>Accessoires mode</option>
+                        <option>Maroquinerie</option>
+                        <option>Autres</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Prix</label>
+                    <select class="filter-select">
+                        <option>Tous les prix</option>
+                        <option>Moins de 20€</option>
+                        <option>20€ - 50€</option>
+                        <option>50€ - 100€</option>
+                        <option>Plus de 100€</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Disponibilité</label>
+                    <select class="filter-select">
+                        <option>Tous les produits</option>
+                        <option>En stock</option>
+                        <option>Bientôt disponible</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section produits -->
+        <section class="products-section">
+            <div class="products-header">
+                <div class="products-count">
+                    📦 {{ produits|length }} produit{{ produits|length|pluralize }} disponible{{ produits|length|pluralize }}
+                </div>
+                <select class="sort-select">
+                    <option>Trier par : Pertinence</option>
+                    <option>Prix croissant</option>
+                    <option>Prix décroissant</option>
+                    <option>Nouveautés</option>
+                    <option>Populaires</option>
+                </select>
+            </div>
+
+            {% if produits %}
+            <div class="products-grid">
+                {% for produit in produits %}
+                <div class="product-card" data-product-id="{{ produit.id }}">
+                    <div class="product-image-container">
+                        {% if produit.image %}
+                            <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" class="product-image">
+                        {% else %}
+                            <div class="product-image" style="background: #e2e8f0; display: flex; align-items: center; justify-content: center; color: #4a5568; font-size: 0.9rem;">
+                                📷 Image non disponible
+                            </div>
+                        {% endif %}
+                        
+                        <div class="product-overlay">
+                            <button class="quick-view-btn" data-product='{"id": "{{ produit.id }}", "name": "{{ produit.nom }}", "price": "{{ produit.prix }}", "description": "{{ produit.description }}", "image": "{% if produit.image %}{{ produit.image.url }}{% endif %}"}'>
+                                👁️ Voir rapidement
+                            </button>
+                        </div>
+                        
+                        <div class="product-badge">Nouveau</div>
+                    </div>
+                    
+                    <div class="product-info">
+                        <h3 class="product-name">{{ produit.nom }}</h3>
+                        <p class="product-price">{{ produit.prix }} FCFA</p>
+                        <p class="product-description">
+                            {{ produit.description }}
+                        </p>
+                        
+                        <div class="product-actions">
+                            <button class="action-btn add-to-cart">🛒 Ajouter</button>
+                            <button class="action-btn view-details" data-product='{"id": "{{ produit.id }}", "name": "{{ produit.nom }}", "price": "{{ produit.prix }}", "description": "{{ produit.description }}", "image": "{% if produit.image %}{{ produit.image.url }}{% endif %}"}'>
+                                📖 Détails
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="pagination-btn">← Précédent</button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <span class="pagination-info">...</span>
+                <button class="pagination-btn">10</button>
+                <button class="pagination-btn">Suivant →</button>
+            </div>
+
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">😔</div>
+                <h2 class="empty-title">Aucun produit trouvé</h2>
+                <p class="empty-description">
+                    Nous n'avons trouvé aucun produit correspondant à vos critères. 
+                    Revenez bientôt pour découvrir notre nouvelle collection !
+                </p>
+                <button class="search-btn" onclick="location.reload()">
+                    🔄 Voir tous les produits
+                </button>
+            </div>
+            {% endif %}
+        </section>
+
+        <!-- Bouton retour -->
+        <div class="back-btn">
+            <a href="{% url 'accueil' %}">
+                ← Retour à l'accueil
+            </a>
+        </div>
+    </div>
+
+    <!-- Modal pour voir rapidement -->
+    <div id="quickViewModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image-container">
+                    <img id="modalProductImage" src="" alt="" class="modal-image">
+                </div>
+                <div class="modal-info">
+                    <h2 id="modalProductName"></h2>
+                    <p id="modalProductPrice" class="modal-price"></p>
+                    <p id="modalProductDescription" class="modal-description"></p>
+                    <div class="modal-features">
+                        <div class="feature-item"> Livraison gratuite</div>
+                        <div class="feature-item"> Retour sous 30 jours</div>
+                        <div class="feature-item"> Support 24/7</div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="modal-btn modal-btn-primary">🛒 Ajouter au panier</button>
+                        <button class="modal-btn modal-btn-secondary">❤️ Ajouter aux favoris</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour détails complets -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image-container">
+                    <img id="detailProductImage" src="" alt="" class="modal-image">
+                </div>
+                <div class="modal-info">
+                    <h2 id="detailProductName"></h2>
+                    <p id="detailProductPrice" class="modal-price"></p>
+                    <p id="detailProductDescription" class="modal-description"></p>
+                    <div class="modal-features">
+                        <div class="feature-item">🌟 Produit de haute qualité</div>
+                        <div class="feature-item">🚚 Livraison sous 48h</div>
+                        <div class="feature-item">💎 Matériaux premium</div>
+                        <div class="feature-item">🛡️ Garantie 1 an</div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="modal-btn modal-btn-primary">🛒 Acheter maintenant</button>
+                        <button class="modal-btn modal-btn-secondary">📞 Nous contacter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Scripts pour les interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation au scroll
+            const productCards = document.querySelectorAll('.product-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            productCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+            
+            // Simulation d'ajout au panier
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productName = this.closest('.product-card').querySelector('.product-name').textContent;
+                    this.textContent = '✅ Ajouté !';
+                    this.style.background = '#48bb78';
+                    
+                    setTimeout(() => {
+                        this.textContent = '🛒 Ajouter';
+                        this.style.background = '';
+                    }, 2000);
+                    
+                    // Ici vous pouvez ajouter la logique pour ajouter au panier
+                    console.log(`Produit ajouté : ${productName}`);
+                });
+            });
+
+            // GESTION DES MODALS - CORRECTION DES BOUTONS
+            const quickViewModal = document.getElementById('quickViewModal');
+            const detailModal = document.getElementById('detailModal');
+            const closeButtons = document.querySelectorAll('.close-modal');
+
+            // Bouton "Voir rapidement"
+            const quickViewButtons = document.querySelectorAll('.quick-view-btn');
+            quickViewButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productData = JSON.parse(this.getAttribute('data-product'));
+                    openQuickViewModal(productData);
+                });
+            });
+
+            // Bouton "Détails"
+            const viewDetailsButtons = document.querySelectorAll('.view-details');
+            viewDetailsButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productData = JSON.parse(this.getAttribute('data-product'));
+                    openDetailModal(productData);
+                });
+            });
+
+            // Fonction pour ouvrir le modal "Voir rapidement"
+            function openQuickViewModal(productData) {
+                document.getElementById('modalProductName').textContent = productData.name;
+                document.getElementById('modalProductPrice').textContent = productData.price + ' FCFA';
+                document.getElementById('modalProductDescription').textContent = productData.description;
+                
+                if (productData.image) {
+                    document.getElementById('modalProductImage').src = productData.image;
+                } else {
+                    document.getElementById('modalProductImage').src = '';
+                    document.getElementById('modalProductImage').alt = 'Image non disponible';
+                }
+                
+                quickViewModal.style.display = 'block';
+            }
+
+            // Fonction pour ouvrir le modal "Détails"
+            function openDetailModal(productData) {
+                document.getElementById('detailProductName').textContent = productData.name;
+                document.getElementById('detailProductPrice').textContent = productData.price + ' FCFA';
+                document.getElementById('detailProductDescription').textContent = productData.description;
+                
+                if (productData.image) {
+                    document.getElementById('detailProductImage').src = productData.image;
+                } else {
+                    document.getElementById('detailProductImage').src = '';
+                    document.getElementById('detailProductImage').alt = 'Image non disponible';
+                }
+                
+                detailModal.style.display = 'block';
+            }
+
+            // Fermer les modals
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    quickViewModal.style.display = 'none';
+                    detailModal.style.display = 'none';
+                });
+            });
+
+            // Fermer en cliquant en dehors du modal
+            window.addEventListener('click', function(event) {
+                if (event.target === quickViewModal) {
+                    quickViewModal.style.display = 'none';
+                }
+                if (event.target === detailModal) {
+                    detailModal.style.display = 'none';
+                }
+            });
+
+            // Fermer avec la touche Échap
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    quickViewModal.style.display = 'none';
+                    detailModal.style.display = 'none';
+                }
+            });
+
+            // Actions dans les modals
+            const modalAddToCartButtons = document.querySelectorAll('.modal-btn-primary');
+            modalAddToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productName = this.closest('.modal-info').querySelector('h2').textContent;
+                    alert(`🎉 ${productName} a été ajouté à votre panier !`);
+                    quickViewModal.style.display = 'none';
+                    detailModal.style.display = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,845 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - Fah_Accessoires</title>
+    <style>
+        /* Reset et base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #000000 0%, #2d3748 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* En-tête */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .nav a {
+            margin: 0 25px;
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: #000000;
+            background: rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav a.active {
+            color: #000000;
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        /* Bannière Hero avec image */
+        .hero-banner {
+            position: relative;
+            height: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+            transition: transform 0.5s ease;
+        }
+
+        .hero-banner:hover .hero-image {
+            transform: scale(1.05);
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #000000 0%, #4a5568 100%);
+            color: white;
+            padding: 15px 35px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            animation: fadeInUp 1s ease-out 0.4s both;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+            background: linear-gradient(135deg, #2d3748 0%, #000000 100%);
+        }
+
+        /* Section à propos */
+        .about-section {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .about-section h2 {
+            font-size: 2.5rem;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            font-size: 1.2rem;
+            color: #4a5568;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            padding: 30px 20px;
+            background: #f8fafc;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .feature-card::after {
+            content: '👆 Cliquez pour en savoir plus';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: #667eea;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::after {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .feature-description {
+            color: #4a5568;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* MODAL STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            animation: modalSlideIn 0.3s ease-out;
+            position: relative;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4a5568;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(255,255,255,0.9);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #000000;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .modal-description {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .modal-details {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .modal-details h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
+
+        /* Produits populaires */
+        .products-section {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #2d3748;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, #000000 0%, #4a5568 100%);
+            border-radius: 2px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #000000 0%, #4a5568 100%);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 15px;
+        }
+
+        .product-description {
+            color: #4a5568;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Boutons d'action */
+        .action-buttons {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            color: #000000;
+            padding: 15px 35px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            margin: 0 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-size: 1.1rem;
+            border: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            background: #000000;
+            color: white;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #000000 0%, #4a5568 100%);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2d3748 0%, #000000 100%);
+            color: white;
+        }
+
+        /* Message vide amélioré */
+        .empty-message {
+            text-align: center;
+            color: #4a5568;
+            font-size: 1.2rem;
+            padding: 60px 40px;
+            background: #f8fafc;
+            border-radius: 15px;
+            border: 2px dashed #cbd5e0;
+        }
+
+        .empty-message h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        /* Bouton retour */
+        .back-btn {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .back-btn a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+
+        .back-btn a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav a {
+                margin: 0 10px;
+                font-size: 1rem;
+                padding: 8px 15px;
+            }
+            
+            .hero-banner {
+                height: 400px;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                margin: 10px;
+                width: 200px;
+                justify-content: center;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- En-tête -->
+        <header class="header">
+            <h1>Fah_Accessoires</h1>
+            <p>Votre destination pour des accessoires uniques et tendance</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <a href="{% url 'accueil' %}" class="active">🏠 Accueil</a>
+            <a href="{% url 'liste_produits' %}">🛍️ Produits</a>
+            <a href="{% url 'contact' %}">📞 Contact</a>
+        </nav>
+
+        <!-- Bannière Hero avec image -->
+        <section class="hero-banner">
+            <!-- IMAGE DE BANNIÈRE RESTAURÉE -->
+            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                 alt="Boutique Fah Accessoires - Collection d'accessoires" 
+                 class="hero-image">
+            <div class="hero-content">
+                <h1 class="hero-title">Bienvenue chez Fah_Accessoires </h1>
+                <p class="hero-subtitle">Découvrez notre collection exclusive d'accessoires soigneusement sélectionnés pour vous</p>
+                <a href="{% url 'liste_produits' %}" class="hero-btn">
+                     Découvrir la collection
+                </a>
+            </div>
+        </section>
+
+        <!-- Section à propos -->
+        <section class="about-section">
+            <h2>Pourquoi choisir Fah_Accessoires ?</h2>
+            <p>Nous nous engageons à vous offrir les accessoires les plus tendance et de la meilleure qualité, soigneusement sélectionnés pour répondre à vos besoins.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card" data-feature="qualite">
+                    <div class="feature-icon">🌟</div>
+                    <h3 class="feature-title">Qualité Premium</h3>
+                    <p class="feature-description">Des matériaux de haute qualité pour une durabilité exceptionnelle</p>
+                </div>
+                
+                <div class="feature-card" data-feature="livraison">
+                    <div class="feature-icon">🚚</div>
+                    <h3 class="feature-title">Livraison Rapide</h3>
+                    <p class="feature-description">Expédition sous 24h dans tout le Sénégal</p>
+                </div>
+                
+                <div class="feature-card" data-feature="satisfaction">
+                    <div class="feature-icon">💝</div>
+                    <h3 class="feature-title">Satisfaction Garantie</h3>
+                    <p class="feature-description">30 jours pour changer d'avis ou être remboursé</p>
+                </div>
+
+                <div class="feature-card" data-feature="prix">
+                    <div class="feature-icon">💰</div>
+                    <h3 class="feature-title">Prix Compétitifs</h3>
+                    <p class="feature-description">Les meilleurs prix du marché sans compromis sur la qualité</p>
+                </div>
+                
+                <div class="feature-card" data-feature="cadeaux">
+                    <div class="feature-icon">🎁</div>
+                    <h3 class="feature-title">Cadeaux Offerts</h3>
+                    <p class="feature-description">Un petit cadeau surprise offert à chaque commande</p>
+                </div>
+                
+                <div class="feature-card" data-feature="emballage">
+                    <div class="feature-icon">📦</div>
+                    <h3 class="feature-title">Emballage Soigné</h3>
+                    <p class="feature-description">Emballage premium pour une expérience déballage inoubliable</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Produits populaires -->
+        <section class="products-section">
+            <h2 class="section-title"> Produits Populaires</h2>
+            
+            {% if produits_populaires %}
+            <div class="products-grid">
+                {% for produit in produits_populaires %}
+                <div class="product-card">
+                    {% if produit.image %}
+                        <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" class="product-image">
+                    {% else %}
+                        <div class="product-image" style="background: #e2e8f0; display: flex; align-items: center; justify-content: center; color: #4a5568; font-size: 0.9rem;">
+                            📷 Image non disponible
+                        </div>
+                    {% endif %}
+                    
+                    <h3 class="product-name">{{ produit.nom }}</h3>
+                    <!-- CORRECTION : Prix en FCFA au lieu de € -->
+                    <p class="product-price">{{ produit.prix }} FCFA</p>
+                    <p class="product-description">
+                        {{ produit.description|default:"Description à venir"|truncatewords:20 }}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <!-- CORRECTION : Message amélioré -->
+            <div class="empty-message">
+                <h3>🛒 Notre collection arrive bientôt !</h3>
+                <p>Nous préparons une sélection exceptionnelle d'accessoires pour vous.</p>
+                <p style="margin-top: 15px; font-size: 1rem; color: #718096;">
+                    Revenez très vite pour découvrir nos nouveautés !
+                </p>
+            </div>
+            {% endif %}
+        </section>
+
+        <!-- Boutons d'action -->
+        <div class="action-buttons">
+            <a href="{% url 'liste_produits' %}" class="btn btn-primary">
+                 Voir tous les produits
+            </a>
+            <a href="{% url 'contact' %}" class="btn">
+                📞 Nous contacter
+            </a>
+        </div>
+    </div>
+
+    <!-- Modal pour les détails des features -->
+    <div id="featureModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="modal-icon" id="modalFeatureIcon"></div>
+                <h2 class="modal-title" id="modalFeatureTitle"></h2>
+                <p class="modal-description" id="modalFeatureDescription"></p>
+                
+                <div class="modal-details">
+                    <h4> Détails supplémentaires</h4>
+                    <div id="modalFeatureDetails"></div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="closeFeatureModal()">
+                    👍 Compris !
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Données détaillées pour chaque feature
+        const featuresData = {
+            qualite: {
+                icon: "🌟",
+                title: "Qualité Premium",
+                description: "Des matériaux de haute qualité pour une durabilité exceptionnelle",
+                details: [
+                    " Matériaux soigneusement sélectionnés",
+                    " Contrôle qualité rigoureux",
+                    " Durabilité garantie",
+                    " Résistance à l'usure",
+                    " Finitions impeccables"
+                ]
+            },
+            livraison: {
+                icon: "🚚",
+                title: "Livraison Rapide",
+                description: "Expédition sous 24h dans tout le Sénégal",
+                details: [
+                    " Préparation sous 24h",
+                    " Livraison express",
+                    " Suivi en temps réel",
+                    " Livraison sécurisée",
+                    " Couverture nationale"
+                ]
+            },
+            satisfaction: {
+                icon: "💝",
+                title: "Satisfaction Garantie",
+                description: "30 jours pour changer d'avis ou être remboursé",
+                details: [
+                    " Retour sous 30 jours",
+                    " Remboursement intégral",
+                    " Processus simplifié",
+                    " Service client dédié",
+                    " Sans frais cachés"
+                ]
+            },
+            prix: {
+                icon: "💰",
+                title: "Prix Compétitifs",
+                description: "Les meilleurs prix du marché sans compromis sur la qualité",
+                details: [
+                    " Meilleur rapport qualité/prix",
+                    " Pas de frais cachés",
+                    " Prix transparents",
+                    " Offres spéciales régulières",
+                    " Garantie du meilleur prix"
+                ]
+            },
+            cadeaux: {
+                icon: "🎁",
+                title: "Cadeaux Offerts",
+                description: "Un petit cadeau surprise offert à chaque commande",
+                details: [
+                    " Cadeau surprise inclus",
+                    " Emballage cadeau gratuit",
+                    " Produits exclusifs",
+                    " Attention personnalisée",
+                    " Renouvellement régulier"
+                ]
+            },
+            emballage: {
+                icon: "📦",
+                title: "Emballage Soigné",
+                description: "Emballage premium pour une expérience déballage inoubliable",
+                details: [
+                    " Emballage premium",
+                    " Protection optimale",
+                    " Design élégant",
+                    " Expérience déballage unique",
+                    " Matériaux écologiques"
+                ]
+            }
+        };
+
+        // Gestion des clics sur les features
+        document.addEventListener('DOMContentLoaded', function() {
+            const featureCards = document.querySelectorAll('.feature-card');
+            const modal = document.getElementById('featureModal');
+            const closeBtn = document.querySelector('.close-modal');
+
+            featureCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const featureId = this.getAttribute('data-feature');
+                    openFeatureModal(featureId);
+                });
+            });
+
+            closeBtn.addEventListener('click', closeFeatureModal);
+
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    closeFeatureModal();
+                }
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeFeatureModal();
+                }
+            });
+        });
+
+        function openFeatureModal(featureId) {
+            const feature = featuresData[featureId];
+            const modal = document.getElementById('featureModal');
+            
+            document.getElementById('modalFeatureIcon').textContent = feature.icon;
+            document.getElementById('modalFeatureTitle').textContent = feature.title;
+            document.getElementById('modalFeatureDescription').textContent = feature.description;
+            
+            const detailsContainer = document.getElementById('modalFeatureDetails');
+            detailsContainer.innerHTML = '';
+            
+            feature.details.forEach(detail => {
+                const detailItem = document.createElement('div');
+                detailItem.className = 'detail-item';
+                detailItem.textContent = detail;
+                detailsContainer.appendChild(detailItem);
+            });
+            
+            modal.style.display = 'block';
+        }
+
+        function closeFeatureModal() {
+            document.getElementById('featureModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
