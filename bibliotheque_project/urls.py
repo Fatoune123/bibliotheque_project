@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.http import HttpResponse
 
-admin.site.site_header = "Bibliothèque Admin"
-admin.site.site_title = "Bibliothèque"
-admin.site.index_title = "Gestion de la bibliothèque"
+def home(request):
+    return HttpResponse("API Bibliotheque fonctionne 👍")
 
 urlpatterns = [
+    path('', home),  # page d'accueil
     path('admin/', admin.site.urls),
 ]
