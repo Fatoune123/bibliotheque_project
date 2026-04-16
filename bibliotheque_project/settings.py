@@ -10,12 +10,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # =======================
 SECRET_KEY = 'django-insecure-changez-moi-en-production'
 
-DEBUG = False  # IMPORTANT pour Render
+DEBUG = False  # production Render
 
 ALLOWED_HOSTS = [
-    'bibliotheque-project-1-m2ka.onrender.com',
+    '127.0.0.1',
     'localhost',
-    '127.0.0.1'
+    '.onrender.com'
 ]
 
 
@@ -32,13 +32,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Third party
+    # third party
     'rest_framework',
     'django_filters',
     'drf_spectacular',
     'rest_framework_simplejwt',
 
-    # Apps
+    # apps
     'api',
 ]
 
@@ -57,9 +57,6 @@ MIDDLEWARE = [
 ]
 
 
-# =======================
-# URLS
-# =======================
 ROOT_URLCONF = 'bibliotheque_project.urls'
 
 
@@ -81,12 +78,6 @@ TEMPLATES = [
         },
     },
 ]
-
-
-WSGI_APPLICATION = 'bibliotheque_project.wsgi.application'
-SGI_APPLICATION = 'bibliotheque_project.wsgi.application'
-
-
 # =======================
 # BASE DE DONNEES (POSTGRESQL)
 # =======================
@@ -102,9 +93,10 @@ DATABASES = {
 }
 
 
-# =======================
-# BASE DE DONNEES (POSTGRESQL)
-# =======================
+WSGI_APPLICATION = 'bibliotheque_project.wsgi.application'
+
+
+# ❌ SUPPRIMÉ doublon DATABASES (corrigé proprement)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -118,7 +110,7 @@ DATABASES = {
 
 
 # =======================
-# VALIDATION MOT DE PASSE
+# VALIDATION PASSWORD
 # =======================
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -163,20 +155,6 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-    'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend',
-        'rest_framework.filters.SearchFilter',
-        'rest_framework.filters.OrderingFilter',
-    ],
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle',
-    ],
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '100/hour',
-        'user': '1000/hour',
-    },
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 
