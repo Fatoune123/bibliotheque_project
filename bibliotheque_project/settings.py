@@ -1,15 +1,22 @@
 from pathlib import Path
 from datetime import timedelta
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # =======================
 # SECURITE
 # =======================
 SECRET_KEY = 'django-insecure-changez-moi-en-production'
-DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+DEBUG = False  # IMPORTANT pour Render
+
+ALLOWED_HOSTS = [
+    'bibliotheque-project-1-m2ka.onrender.com',
+    'localhost',
+    '127.0.0.1'
+]
 
 
 # =======================
@@ -77,6 +84,7 @@ TEMPLATES = [
 
 
 WSGI_APPLICATION = 'bibliotheque_project.wsgi.application'
+SGI_APPLICATION = 'bibliotheque_project.wsgi.application'
 
 
 # =======================
@@ -92,6 +100,23 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+
+# =======================
+# BASE DE DONNEES (POSTGRESQL)
+# =======================
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'bibliotheque_db'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'fah'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
+    }
+}
+
+
 # =======================
 # VALIDATION MOT DE PASSE
 # =======================
@@ -107,15 +132,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # INTERNATIONALISATION
 # =======================
 LANGUAGE_CODE = 'fr-fr'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Dakar'
 USE_I18N = True
 USE_TZ = True
 
 
 # =======================
-# FICHIERS STATIQUES
+# STATIC FILES
 # =======================
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
