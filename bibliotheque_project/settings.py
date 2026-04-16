@@ -9,14 +9,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-changez-moi-en-production'
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # =======================
 # APPLICATIONS
 # =======================
 INSTALLED_APPS = [
-    "jazzmin",  # 👈 ADMIN MODERNE (IMPORTANT)
+    "jazzmin",
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'drf_spectacular',
+    'rest_framework_simplejwt',
 
     # Apps
     'api',
@@ -49,6 +50,9 @@ MIDDLEWARE = [
 ]
 
 
+# =======================
+# URLS
+# =======================
 ROOT_URLCONF = 'bibliotheque_project.urls'
 
 
@@ -76,7 +80,7 @@ WSGI_APPLICATION = 'bibliotheque_project.wsgi.application'
 
 
 # =======================
-# BASE DE DONNEES
+# BASE DE DONNEES (POSTGRESQL)
 # =======================
 DATABASES = {
     'default': {
@@ -84,12 +88,10 @@ DATABASES = {
         'NAME': 'bibliotheque_db',
         'USER': 'postgres',
         'PASSWORD': 'fah',
-        'HOST': '127.0.0.1',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
-
-
 # =======================
 # VALIDATION MOT DE PASSE
 # =======================
@@ -102,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # =======================
-# LANGUE & TEMPS
+# INTERNATIONALISATION
 # =======================
 LANGUAGE_CODE = 'fr-fr'
 TIME_ZONE = 'UTC'
@@ -117,11 +119,14 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
+# =======================
+# DEFAULT AUTO FIELD
+# =======================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # =======================
-# DJANGO REST FRAMEWORK
+# REST FRAMEWORK
 # =======================
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
