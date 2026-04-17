@@ -10,12 +10,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # =======================
 SECRET_KEY = 'django-insecure-changez-moi-en-production'
 
-DEBUG = False  # production Render
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     '.onrender.com'
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.onrender.com"
 ]
 
 
@@ -48,6 +52,10 @@ INSTALLED_APPS = [
 # =======================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # WhiteNoise (important Render)
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,39 +86,28 @@ TEMPLATES = [
         },
     },
 ]
-# =======================
-# BASE DE DONNEES (POSTGRESQL)
-# =======================
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bibliotheque_db',
-        'USER': 'postgres',
-        'PASSWORD': 'fah',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
 
 
 WSGI_APPLICATION = 'bibliotheque_project.wsgi.application'
 
 
-# ❌ SUPPRIMÉ doublon DATABASES (corrigé proprement)
+# =======================
+# BASE DE DONNEES (CORRIGÉ POUR RENDER)
+# =======================
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'bibliotheque_db'),
-        'USER': os.getenv('DB_USER', 'postgres'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'fah'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
 
 # =======================
-# VALIDATION PASSWORD
+# PASSWORD VALIDATION
 # =======================
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -134,6 +131,9 @@ USE_TZ = True
 # =======================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# WhiteNoise (CORRIGÉ)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 
 # =======================
@@ -165,4 +165,13 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+
+# =======================
+# LOGGING (CORRIGÉ)
+# =======================
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
 }
