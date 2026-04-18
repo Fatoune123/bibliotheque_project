@@ -1,16 +1,17 @@
 from pathlib import Path
 from datetime import timedelta
 import os
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # =======================
-# SECURITE
+# SÉCURITÉ
 # =======================
-SECRET_KEY = 'django-insecure-changez-moi-en-production'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-changez-moi-en-production')
 
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -21,6 +22,11 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     "https://*.onrender.com"
 ]
+
+# sécurité Render
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 
 # =======================
@@ -36,13 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # third party
     'rest_framework',
     'django_filters',
     'drf_spectacular',
     'rest_framework_simplejwt',
 
-    # apps
     'api',
 ]
 
@@ -52,8 +56,6 @@ INSTALLED_APPS = [
 # =======================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
-    # WhiteNoise (important Render)
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -92,22 +94,19 @@ WSGI_APPLICATION = 'bibliotheque_project.wsgi.application'
 
 
 # =======================
-# BASE DE DONNEES (CORRIGÉ POUR RENDER)
+# BASE DE DONNÉES (IMPORTANT)
 # =======================
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT', '5432'),
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 
 # =======================
-# PASSWORD VALIDATION
+# VALIDATION MOT DE PASSE
 # =======================
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -132,7 +131,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# WhiteNoise (CORRIGÉ)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 
@@ -169,9 +167,18 @@ SIMPLE_JWT = {
 
 
 # =======================
-# LOGGING (CORRIGÉ)
+# LOGGING
 # =======================
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
 }
